@@ -1,0 +1,63 @@
+
+
+<div class="container mt-5">
+    <h1>
+        Formulario de Usuario
+    </h1>
+
+    <form class="mt-5" method="post" action="/user">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre">
+            <div id="emailHelp" class="form-text">Mínimo de tres caracteres</div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+            <div id="passwordHelp" class="form-text">Mínimo de seis caracteres</div>
+        </div>
+        <div class="mb-3 form-check text-center">
+            <button type="submit" class="btn btn-primary w-25">Registrarse</button>
+            <button type="reset" class="btn btn-danger w-25">Borrar datos</button>
+        </div>
+    </form>
+
+</div>
+
+
+{{!-- NO FUNCIONA - A MODO DE EJEMPLO --}}
+
+{{!-- 1. Tenemos el JS separado del hbs --}}
+{{!-- <script src="./js/userForm.js"></script> --}}
+
+{{!-- 2. Sólo realizamos el fetch con post --}}
+<script>
+    const nombre = document.getElementById('nombre');
+
+    fetch('http://localhost:8080/user/formulario', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nombre: nombre.value
+        })
+    })
+
+    const miBoton = document.querySelector('button');
+
+    miBoton.addEventListener('click', () => {
+        console.log('Hiciste click');
+    })
+</script>
+
+{{!-- 3. POdedemos usar JQuery --}}
+<script>
+    $document.getElementById('nombre').addEventListener('keyup', (e) => {
+        console.log(e.target.value);
+    })
+</script>

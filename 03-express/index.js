@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const { middlewares } = require('./middlewares/data.js');
 const homeRouter = require('./routers/homeRouter.js');
+const userRouter = require('./routers/userRouter.js');
 
 //configuraciones de motores de plantillas
 app.set('view engine', 'hbs');
@@ -29,13 +30,20 @@ app.use(cors(/* {
 
 //app.use('/home', require('./routers/homeRouter'));
 app.use('/home', homeRouter);
+app.use('/user', userRouter);
 
-app.get('/hbs', (req, res) => { //http://localhost:8080/hbs
+app.get('/', (req, res) => { //http://localhost:8080/hbs
     res.render('index');
 }); 
 
 app.get('/usuario', (req, res) => {//http://localhost:8080/usuario
     res.render('usuario');
+});
+
+app.get('*', (req, res) => {
+    res.status(404).render('error',{
+        message: 'Error 404: Página no encontrada'
+    });
 });
 
 
