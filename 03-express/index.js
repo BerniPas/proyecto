@@ -9,6 +9,7 @@ dotenv.config();
 const { middlewares } = require('./middlewares/data.js');
 const homeRouter = require('./routers/homeRouter.js');
 const userRouter = require('./routers/userRouter.js');
+const productRouter = require('./routers/productRouter.js');
 
 //configuraciones de motores de plantillas
 app.set('view engine', 'hbs');
@@ -18,7 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
 app.use( middlewares );
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
@@ -31,6 +32,7 @@ app.use(cors(/* {
 //app.use('/home', require('./routers/homeRouter'));
 app.use('/home', homeRouter);
 app.use('/user', userRouter);
+app.use('/product', productRouter);
 
 app.get('/', (req, res) => { //http://localhost:8080/hbs
     res.render('index');

@@ -16,9 +16,9 @@ router.get('/all', getUserAll);
 
 router.post('/', 
 [
-    check('nombre').notEmpty().isLength({min: 3}),
-    check('email').isEmail(),
-    check('password').notEmpty().isLength({min: 6})
+    check('nombre', "Nombre obligatorio").not().isEmpty().isLength({min: 3}),
+    check('email').not().isEmpty().isEmail(),
+    check('password').not().isEmpty().isLength({min: 6})
 ], 
 createUsers);
 
