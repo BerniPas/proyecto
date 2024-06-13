@@ -1,6 +1,7 @@
 const { request, response } = require('express');
 const { validationResult } = require('express-validator');
 const User = require('../models/user.js');
+const bcrypt = require('bcrypt');
 
 
 const userForm = (req = request, res = response) => {
@@ -59,11 +60,23 @@ const createUsers = async (req = request, res = response) => {
         //const newUser = new User(nombre, email, password);
         const newUser = new User(user);
 
+        //encriptamos la contraseña
+        //1. generamos la sal
+        const salt = await bcrypt.genSalt(10);
+        console.log(salt);
+
+        //2. encriptamos la contraseña + sal
+        newUser.password = await bcrypt.hash(newUser.password, salt);
+        console.log(newUser.password);
+
         //guardamos el user nuevo
         await newUser.save();
+        //db.user.insertOne(newUser); //sería la forma de hacerlo en mongoDB
+        //const sql = `INSERT INTO users (nombre, email, password) VALUES ('${nombre}', '${email}', '${password}')`;
+        //const query = await db.query(sql);
         
-        return res.json({
-            newUser
+        return res.render('userForm',{
+            mensaje: 'Usuario creado',
         });
 
     } catch (error) {
@@ -101,8 +114,64 @@ const getUserAll = async (req = request, res = response) => {
 }
 
 
+const formLogin = (req = request, res = response) => {
+    
+    res.render('userLogin');
+}
+
+
+const userLogin = async (req = request, res = response) => {
+
+    
+    const result = validationResult(req);
+    const { email, password } = req.body;
+    
+    if(!result.isEmpty()){
+        console.log(result.array());
+        
+        return res.render('error', {
+            message: 'Faltan datos que son obligatorios'
+        });
+            
+    }
+
+    try {
+        const userExists = await User.findOne({email: email});
+
+        if(!userExists){
+            return res.render('error', {
+                message: 'El usuario NO existe en la Database'
+            });
+        }
+
+        //comparamos la contraseña con el método compare de bcrypt
+        const match = await bcrypt.compare(password, userExists.password);
+
+        if(!match){
+            return res.render('error', {
+                message: 'User o Password incorrectos'
+            });
+        }
+
+        //jwt
+        //session
+
+        return res.status(200).render('admin');
+
+    } catch (error) {
+        return res.status(500).render('error', {
+            message: 'Estamos solucionado un problema en la database'
+        });
+    }
+    
+            
+}
+
+
 module.exports = {
     userForm,
     createUsers,
-    getUserAll
+    getUserAll,
+    formLogin,
+    userLogin
 };
