@@ -2,6 +2,7 @@ const { request, response } = require('express');
 const { validationResult } = require('express-validator');
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
+const enviaMail = require('../servicios/envioMail.js');
 
 
 const userForm = (req = request, res = response) => {
@@ -74,6 +75,9 @@ const createUsers = async (req = request, res = response) => {
         //db.user.insertOne(newUser); //sería la forma de hacerlo en mongoDB
         //const sql = `INSERT INTO users (nombre, email, password) VALUES ('${nombre}', '${email}', '${password}')`;
         //const query = await db.query(sql);
+
+        //Enviamos un email al usuario registrado con un mensaje de bienvenida
+        await enviaMail(newUser.email, newUser.nombre);
         
         return res.render('userForm',{
             mensaje: 'Usuario creado',
@@ -99,7 +103,7 @@ const getUserAll = async (req = request, res = response) => {
 
         console.log(users);
         
-        return res.json({
+        return res.render('listarUsuarios',{
             users
         });
 

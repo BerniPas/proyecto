@@ -1,0 +1,39 @@
+<div class="container mt-5">
+    <h1>
+        Lista de Usuarios
+    </h1>
+
+    <h2>
+        {{ mensaje }}
+    </h2>
+
+
+    <table class="container table table-striped table-hover mt-5">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <th scope="row">{{_id}}</th>
+                <td>{{nombre}}</td>
+                <td>{{email}}</td>
+                <td>{{password}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+        <tfoot class="mt-5">
+            <tr class="mt-5">
+                <td colspan="4" class="text-center">
+                    <a href="/user/formulario" class="btn btn-primary w-50">Agregar Usuario</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+</div>
