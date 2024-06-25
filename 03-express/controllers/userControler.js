@@ -3,6 +3,9 @@ const { validationResult } = require('express-validator');
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
 const enviaMail = require('../servicios/envioMail.js');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
 
 const userForm = (req = request, res = response) => {
@@ -142,6 +145,8 @@ const userLogin = async (req = request, res = response) => {
     try {
         const userExists = await User.findOne({email: email});
 
+        console.log(userExists);
+
         if(!userExists){
             return res.render('error', {
                 message: 'El usuario NO existe en la Database'
@@ -158,9 +163,32 @@ const userLogin = async (req = request, res = response) => {
         }
 
         //jwt
-        //session
+        //1.Código para la firma
+        const firmaJWT = process.env.JWT_SECRET;
 
-        return res.status(200).render('admin');
+        //2. Datos del usuario
+        const payload = {
+            id: userExists._id,
+            email: userExists.email,
+            nombre: userExists.nombre
+        }
+        
+        //Firmar el token con el método sign
+        const token = await jwt.sign(payload, firmaJWT, {
+            expiresIn: '1h'
+        });
+
+        //enviamos el token al cliente
+        res.cookie('token', token, {
+            httpOnly: true,
+            //maxAge: 1000 * 60 * 60 * 24
+        });
+
+        //res.header('token', token);
+
+        return res.status(200).render('admin', {
+            nombre: userExists.nombre
+        });
 
     } catch (error) {
         return res.status(500).render('error', {
@@ -172,10 +200,19 @@ const userLogin = async (req = request, res = response) => {
 }
 
 
+const logoutUser = (req, res) => {
+
+    res.clearCookie('token');
+    return res.status(200).render('index');
+    
+}
+
+
 module.exports = {
     userForm,
     createUsers,
     getUserAll,
     formLogin,
-    userLogin
+    userLogin,
+    logoutUser
 };

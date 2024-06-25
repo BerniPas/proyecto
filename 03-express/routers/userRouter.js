@@ -6,7 +6,8 @@ const {
     getUserAll,
     createUsers, 
     formLogin,
-    userLogin
+    userLogin,
+    logoutUser
 } = require('../controllers/userControler.js');
 
 /* 
@@ -29,5 +30,7 @@ router.post('/login',
         check('email').not().isEmpty().isEmail(),
         check('password').not().isEmpty().isLength({min: 6})
     ] , userLogin);
+
+router.post('/logout', logoutUser);
 
 module.exports = router;

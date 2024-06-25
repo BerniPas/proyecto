@@ -10,6 +10,7 @@ const { middlewares } = require('./middlewares/data.js');
 const homeRouter = require('./routers/homeRouter.js');
 const userRouter = require('./routers/userRouter.js');
 const productRouter = require('./routers/productRouter.js');
+const cookieParser = require('cookie-parser');
 
 //configuraciones de motores de plantillas
 app.set('view engine', 'hbs');
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(cors(/* {
     origin: process.env.CORS_ORIGIN,
     methods: ['GET', 'POST'],
