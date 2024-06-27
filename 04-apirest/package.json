@@ -1,0 +1,10 @@
+{
+  "name": "04-apirest",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently --kill-others \"cd back && nodemon server.js\" \"cd front && npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
