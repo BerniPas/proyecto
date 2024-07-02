@@ -2,7 +2,7 @@
   "name": "04-apirest",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently --kill-others \"cd back && nodemon server.js\" \"cd front && npm start\""
+    "start": "concurrently --kill-others \"cd databack && nodemon server.js\" \"cd datafront && npm run dev\""
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

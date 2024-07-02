@@ -1,0 +1,33 @@
+
+
+<div class="text-center">
+    <h1>
+        Bienvenido {{ curso.name }} a la Aplicación
+    </h1>
+    <p>
+        Estamos estudiando {{ curso.description }} y el curso es de {{ curso.title }}
+    </p>
+
+
+{{!-- esto no funciona: crear datos en la ruta /hbs --}}
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Correo</th>
+        </tr>
+        {{#each data}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.description}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+
+
+
+
+
+

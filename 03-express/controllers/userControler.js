@@ -84,7 +84,7 @@ const createUsers = async (req = request, res = response) => {
         
         return res.render('userForm',{
             mensaje: 'Usuario creado',
-        });
+        }); 
 
     } catch (error) {
         console.log(error);
